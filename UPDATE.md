@@ -10,17 +10,16 @@ Run from the vecrea-id repository root. Create the dentsusoken fork on GitHub fi
 
 ```bash
 cd vecrea-id
-git submodule add https://github.com/eu-digital-identity-wallet/eudi-srv-issuer-oidc-py projects/eudi-srv-issuer-oidc-py
+git submodule add https://github.com/dentsusoken/eudi-srv-issuer-oidc-py projects/eudi-srv-issuer-oidc-py
 cd projects/eudi-srv-issuer-oidc-py
-git remote rename origin upstream
-git remote add origin https://github.com/dentsusoken/eudi-srv-issuer-oidc-py
+git remote add upstream https://github.com/eu-digital-identity-wallet/eudi-srv-issuer-oidc-py
 git fetch upstream
 git checkout main
 git reset --hard upstream/main
 git push -u origin main --force
 ```
 
-Note: `.gitmodules` in vecrea-id points to the upstream (eu-digital-identity-wallet) repository. The fork is [public](https://github.com/dentsusoken/eudi-srv-issuer-oidc-py) for mirroring and branch workflow.
+Note: Add the submodule from the dentsusoken fork URL so `.gitmodules` points to the fork from the start. The submodule references commits (e.g. this UPDATE.md) that exist only in our fork, not in the original. GitHub uses the `.gitmodules` URL to build the submodule link, so it must point to the fork. The fork is now [public](https://github.com/dentsusoken/eudi-srv-issuer-oidc-py), so the link works for everyone.
 
 ## Remote configuration
 
@@ -31,12 +30,11 @@ Note: `.gitmodules` in vecrea-id points to the upstream (eu-digital-identity-wal
 
 ### Initial setup (first-time clone)
 
-Because `.gitmodules` points to the upstream (eu-digital-identity-wallet) repository, cloning gives you `origin` = upstream. Rename it to `upstream` and add your fork as `origin` before using the branch workflow:
+Because `.gitmodules` points to the dentsusoken fork, cloning gives you `origin` = fork. Add `upstream` before using the branch workflow:
 
 ```bash
 cd projects/eudi-srv-issuer-oidc-py
-git remote rename origin upstream
-git remote add origin https://github.com/dentsusoken/eudi-srv-issuer-oidc-py
+git remote add upstream https://github.com/eu-digital-identity-wallet/eudi-srv-issuer-oidc-py
 ```
 
 ## Working with branches
