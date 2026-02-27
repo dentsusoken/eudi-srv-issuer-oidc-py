@@ -28,13 +28,27 @@ Note: Add the submodule from the dentsusoken fork URL so `.gitmodules` points to
 | origin   | https://github.com/dentsusoken/eudi-srv-issuer-oidc-py |
 | upstream | https://github.com/eu-digital-identity-wallet/eudi-srv-issuer-oidc-py |
 
+### Excluding sensitive files from rebase
+
+The `certs/` directory contains private keys, and `private/` contains JWKS and other secrets. **Run the setup script once after clone** so `git rebase upstream/main` does not overwrite your local files:
+
+```bash
+cd projects/eudi-srv-issuer-oidc-py
+./scripts/setup-sensitive-files.sh
+```
+
+Run again after a fresh clone.
+
+To undo: `git update-index --no-skip-worktree certs/cert.pem certs/key.pem certs/client.crt certs/client.key private/cookie_jwks.json private/jwks.json private/token_jwks.json`
+
 ### Initial setup (first-time clone)
 
-Because `.gitmodules` points to the dentsusoken fork, cloning gives you `origin` = fork. Add `upstream` before using the branch workflow:
+Because `.gitmodules` points to the dentsusoken fork, cloning gives you `origin` = fork. Add `upstream` and run the sensitive-files setup:
 
 ```bash
 cd projects/eudi-srv-issuer-oidc-py
 git remote add upstream https://github.com/eu-digital-identity-wallet/eudi-srv-issuer-oidc-py
+./scripts/setup-sensitive-files.sh
 ```
 
 ## Working with branches
