@@ -194,6 +194,11 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+# Local sensitive data (private keys, JWKS)
+# Use git update-index --skip-worktree to exclude from sync; see UPDATE.md
+certs/
+private/
+
 # Cursor
 #  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
 #  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
