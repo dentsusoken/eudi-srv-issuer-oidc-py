@@ -6,4 +6,16 @@ services:
     volumes:
       - ./config.json:/etc/issuer_config/authorization_config.json:ro
       - /tmp/oidc_log_dev/:/tmp/oidc_log_dev/
-    restart: unless-stopped
+    profiles: ["base"]
+
+  issuer_oidc_local:
+    extends:
+      service: issuer_oidc
+    volumes:
+      - ./config_local.json:/config.json:ro
+      - ./openid-configuration_local.json:/openid-configuration.json:ro
+      - ./views_local.py:/views.py:ro
+      - ./server_local.py:/server.py:ro
+      - ./script/certs/tls/localhost+2.pem:/certs/tls/localhost+2.pem:ro
+      - ./script/certs/tls/localhost+2-key.pem:/certs/tls/localhost+2-key.pem:ro
+    profiles: ["local"]
