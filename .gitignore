@@ -205,3 +205,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Generated local files (use generate_local.sh to recreate)
+config_local.json
+openid-configuration_local.json
+server_local.py
+views_local.py
+
+# Generated certificates (use setup-certs.sh to recreate)
+script/certs/

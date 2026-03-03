@@ -1,0 +1,33 @@
+--- openid-configuration.json	2026-03-03 09:20:52
++++ openid-configuration_local.json	2026-03-03 09:20:35
+@@ -13,7 +13,7 @@
+         "urn:ietf:params:oauth:grant-type:jwt-bearer",
+         "refresh_token"
+     ],
+-    "jwks_uri": "https://dev.issuer.eudiw.dev/oidc/static/jwks.json",
++    "jwks_uri": "https://localhost:6005/static/jwks.json",
+     "scopes_supported": [
+         "openid"
+     ],
+@@ -78,12 +78,12 @@
+     "code_challenge_methods_supported": [
+         "S256"
+     ],
+-    "issuer": "https://dev.issuer.eudiw.dev/oidc",
+-    "registration_endpoint": "https://dev.issuer.eudiw.dev/oidc/registration",
+-    "introspection_endpoint": "https://dev.issuer.eudiw.dev/oidc/introspection",
+-    "authorization_endpoint": "https://dev.issuer.eudiw.dev/oidc/authorization",
+-    "token_endpoint": "https://dev.issuer.eudiw.dev/oidc/token",
+-    "userinfo_endpoint": "https://dev.issuer.eudiw.dev/oidc/userinfo",
+-    "end_session_endpoint": "https://dev.issuer.eudiw.dev/oidc/session",
+-    "pushed_authorization_request_endpoint": "https://dev.issuer.eudiw.dev/oidc/pushed_authorization"
++    "issuer": "https://localhost:6005",
++    "registration_endpoint": "https://localhost:6005/registration",
++    "introspection_endpoint": "https://localhost:6005/introspection",
++    "authorization_endpoint": "https://localhost:6005/authorization",
++    "token_endpoint": "https://localhost:6005/token",
++    "userinfo_endpoint": "https://localhost:6005/userinfo",
++    "end_session_endpoint": "https://localhost:6005/session",
++    "pushed_authorization_request_endpoint": "https://localhost:6005/pushed_authorization"
+ }
+\ No newline at end of file
