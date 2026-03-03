@@ -1,0 +1,38 @@
+--- config.json	2026-03-03 09:19:57
++++ config_local.json	2026-03-03 09:16:37
+@@ -33,10 +33,10 @@
+       }
+    },
+    "port":5000,
+-   "domain":"dev.issuer.eudiw.dev/oidc",
++   "domain":"localhost:6005",
+    "server_name":"{domain}",
+-   "base_url":"https://dev.issuer.eudiw.dev/oidc",
+-   "authorization_redirect_url":"https://dev.issuer.eudiw.dev/auth_choice",
++   "base_url":"https://localhost:6005",
++   "authorization_redirect_url":"https://localhost:5001/auth_choice",
+    "op":{
+       "server_info":{
+          "add_ons":{
+@@ -65,8 +65,8 @@
+                      "PS512"
+                   ],
+                   "allowed_htu":[
+-                     "https://dev.issuer.eudiw.dev/token",
+-                     "https://dev.issuer.eudiw.dev/oidc/token"
++                     "https://localhost:5001/token",
++                     "https://localhost:6005/token"
+                   ]
+                }
+             }
+@@ -368,8 +368,8 @@
+       }
+    },
+    "webserver":{
+-      "server_cert":"certs/client.crt",
+-      "server_key":"certs/client.key",
++      "server_cert":"/certs/tls/localhost+2.pem",
++      "server_key":"/certs/tls/localhost+2-key.pem",
+       "ca_bundle":null,
+       "verify_user":false,
+       "port":5000,
