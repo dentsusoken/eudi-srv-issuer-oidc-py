@@ -66,7 +66,8 @@
                   ],
                   "allowed_htu":[
                      "https://dev.issuer.eudiw.dev/token",
-                     "https://dev.issuer.eudiw.dev/oidc/token"
+                     "https://dev.issuer.eudiw.dev/oidc/token",
+                     "https://age-verification.issuer.eudiw.dev/token"
                   ]
                }
             }
@@ -246,7 +247,9 @@
                      "public",
                      "wallet_attestation",
                      "dpop"
-                  ]
+                  ],
+                  "trusted_attesters_path":"/etc/eudiw/pid-issuer-dev/oidc_trusted_attesters",
+                  "trust_validator_url":"https://dev.trust-validator.eudiw.dev/trust"
                }
             },
             "userinfo":{
