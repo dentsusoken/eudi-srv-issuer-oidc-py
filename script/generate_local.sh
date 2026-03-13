@@ -34,6 +34,10 @@ apply_patch app/metadata_config/metadata_config.json      app/metadata_config/me
 apply_patch app/metadata_config/openid-configuration.json app/metadata_config/openid-configuration_local.json patches/openid-configuration_local.patch
 apply_patch app/route_oidc.py                             app/route_oidc_local.py                             patches/route_oidc_local.patch
 apply_patch app/dynamic_func.py                           app/dynamic_func_local.py                           patches/dynamic_func_local.patch
+apply_patch app/route_dynamic.py                          app/route_dynamic_local.py                          patches/route_dynamic_local.patch
+apply_patch app/formatter_func.py                         app/formatter_func_local.py                         patches/formatter_func_local.patch
+apply_patch app/app_config/config_countries.py            app/app_config/config_countries_local.py            patches/config_countries_local.patch
+apply_patch app/app_config/config_service.py              app/app_config/config_service_local.py              patches/config_service_local.patch
 
 echo ""
 echo "Done!"
