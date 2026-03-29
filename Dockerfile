@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Make run.sh executable
 RUN chmod +x run.sh
+RUN mkdir -p /tmp/oidc_log_dev
 
 # Expose Flask port
 EXPOSE 5000
