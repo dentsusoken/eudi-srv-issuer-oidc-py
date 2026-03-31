@@ -12,35 +12,45 @@ WALLET_DIR="${WALLET_DIR:-$HOME/work/eudi-app-ios-wallet-ui}"
 # Verifier バックエンドのパス (環境変数で上書き可能)
 VERIFIER_DIR="${VERIFIER_DIR:-$PARENT_DIR/eudi-srv-verifier-endpoint}"
 
+# --cloud フラグの解析
+CLOUD=false
+for arg in "$@"; do
+  if [ "$arg" = "--cloud" ]; then
+    CLOUD=true
+  fi
+done
+
 echo "=== Creating certificate directories ==="
 mkdir -p "$CERTS_DIR/trusted_cas" "$CERTS_DIR/privKey" "$CERTS_DIR/tls" "$CERTS_DIR/verifier"
 
-# ----------------------------------------------------------------
-# TLS 証明書の生成 (mkcert)
-# ----------------------------------------------------------------
-echo "=== Generating TLS certificate with mkcert ==="
-if ! command -v mkcert &>/dev/null; then
-  echo "  ERROR: mkcert not found. Install with: brew install mkcert"
-  exit 1
-fi
+if [ "$CLOUD" = false ]; then
+  # ----------------------------------------------------------------
+  # TLS 証明書の生成 (mkcert)
+  # ----------------------------------------------------------------
+  echo "=== Generating TLS certificate with mkcert ==="
+  if ! command -v mkcert &>/dev/null; then
+    echo "  ERROR: mkcert not found. Install with: brew install mkcert"
+    exit 1
+  fi
 
-mkcert -install 2>/dev/null || true
-mkcert \
-  -cert-file "$CERTS_DIR/tls/localhost+2.pem" \
-  -key-file  "$CERTS_DIR/tls/localhost+2-key.pem" \
-  localhost 127.0.0.1 ::1
+  mkcert -install 2>/dev/null || true
+  mkcert \
+    -cert-file "$CERTS_DIR/tls/localhost+2.pem" \
+    -key-file  "$CERTS_DIR/tls/localhost+2-key.pem" \
+    localhost 127.0.0.1 ::1
 
-# ----------------------------------------------------------------
-# iOS Simulator に mkcert CA を登録
-# ----------------------------------------------------------------
-echo "=== Registering mkcert CA with iOS Simulator ==="
-MKCERT_CA="$(mkcert -CAROOT)/rootCA.pem"
-if xcrun simctl list devices booted 2>/dev/null | grep -q "Booted"; then
-  xcrun simctl keychain booted add-root-cert "$MKCERT_CA"
-  echo "  Registered to booted simulator"
-else
-  echo "  WARNING: No booted iOS Simulator found. Run manually after launching Simulator:"
-  echo "    xcrun simctl keychain booted add-root-cert \"$MKCERT_CA\""
+  # ----------------------------------------------------------------
+  # iOS Simulator に mkcert CA を登録
+  # ----------------------------------------------------------------
+  echo "=== Registering mkcert CA with iOS Simulator ==="
+  MKCERT_CA="$(mkcert -CAROOT)/rootCA.pem"
+  if xcrun simctl list devices booted 2>/dev/null | grep -q "Booted"; then
+    xcrun simctl keychain booted add-root-cert "$MKCERT_CA"
+    echo "  Registered to booted simulator"
+  else
+    echo "  WARNING: No booted iOS Simulator found. Run manually after launching Simulator:"
+    echo "    xcrun simctl keychain booted add-root-cert \"$MKCERT_CA\""
+  fi
 fi
 
 # ----------------------------------------------------------------
