@@ -29,7 +29,14 @@ To install [Flask](https://flask.palletsprojects.com/en/2.3.x/), please follow t
     git clone git@github.com:eu-digital-identity-wallet/eudi-srv-issuer-oidc-py.git
     ```
 
-2. Activate the environment:
+2. Create a `.venv` folder within the cloned repository:
+
+    ```shell
+    cd eudi-srv-issuer-oidc-py
+    python3 -m venv .venv
+    ```
+
+3. Activate the environment:
 
    Linux/macOS
 
@@ -43,30 +50,30 @@ To install [Flask](https://flask.palletsprojects.com/en/2.3.x/), please follow t
     . .venv\Scripts\Activate
     ```
 
-3. Install or upgrade _pip_
+4. Install or upgrade _pip_
 
     ```shell
     python -m pip install --upgrade pip
     ```
 
-4. Install Flask and other dependencies in virtual environment
+5. Install Flask and other dependencies in virtual environment
 
     ```shell
     pip install -r requirements.txt
     ```
 
-5. Service Configuration
+6. Service Configuration
 
    - Configure the service according to [documentation](api_docs/configuration.md)  
-   ```
-6. Install Issuer Back-End
+   
+7. Install Issuer Back-End
     - Install the service according to [Issuer Back End](https://github.com/eu-digital-identity-wallet/eudi-srv-web-issuing-eudiw-py/blob/main/install.md)
 
-7. Install Issuer Front-End
+8. Install Issuer Front-End
     - Install the service according to [Issuer Front End](https://github.com/eu-digital-identity-wallet/eudi-srv-web-issuing-frontend-eudiw-py/blob/main/install.md)
 
 
-8. Run the EUDIW Authorization Server
+9. Run the EUDIW Authorization Server
 
     On the root directory of the clone repository, insert one of the following command lines to run the EUDIW Authorization Server.
 
