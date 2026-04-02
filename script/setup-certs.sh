@@ -6,12 +6,6 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CERTS_DIR="$SCRIPT_DIR/certs"
 PARENT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-# iOS wallet app のパス (環境変数で上書き可能)
-WALLET_DIR="${WALLET_DIR:-$HOME/work/eudi-app-ios-wallet-ui}"
-
-# Verifier バックエンドのパス (環境変数で上書き可能)
-VERIFIER_DIR="${VERIFIER_DIR:-$PARENT_DIR/eudi-srv-verifier-endpoint}"
-
 # --cloud フラグの解析
 CLOUD=false
 for arg in "$@"; do
@@ -33,7 +27,7 @@ if [ "$CLOUD" = false ]; then
     exit 1
   fi
 
-  mkcert -install 2>/dev/null || true
+  mkcert -install || true
   mkcert \
     -cert-file "$CERTS_DIR/tls/localhost+2.pem" \
     -key-file  "$CERTS_DIR/tls/localhost+2-key.pem" \
@@ -64,7 +58,7 @@ mkdir -p /tmp/log_dev /tmp/oidc_log_dev /tmp/issuer_frontend/log_dev
 # ----------------------------------------------------------------
 echo "=== Generating IACA (root CA) key and certificate ==="
 openssl ecparam -genkey -name prime256v1 -noout \
-  -out "$CERTS_DIR/privKey/IACA_UT_key.pem" 2>/dev/null
+  -out "$CERTS_DIR/privKey/IACA_UT_key.pem"
 
 openssl req -new -x509 -key "$CERTS_DIR/privKey/IACA_UT_key.pem" \
   -out "$CERTS_DIR/trusted_cas/IACA_UT.pem" \
@@ -72,18 +66,18 @@ openssl req -new -x509 -key "$CERTS_DIR/privKey/IACA_UT_key.pem" \
   -subj "/CN=PID Issuer CA - UT 01/O=EUDI Wallet Reference Implementation/C=UT" \
   -addext "basicConstraints=critical,CA:TRUE" \
   -addext "keyUsage=critical,keyCertSign,cRLSign" \
-  -not_before 20250101000000Z 2>/dev/null
+  -not_before 20250101000000Z
 
 # ----------------------------------------------------------------
 # DS (Document Signing) 鍵 + IACA で署名した証明書
 # ----------------------------------------------------------------
 echo "=== Generating DS (Document Signing) key and certificate ==="
 openssl ecparam -genkey -name prime256v1 -noout \
-  -out "$CERTS_DIR/privKey/PID-DS-0001_UT.pem" 2>/dev/null
+  -out "$CERTS_DIR/privKey/PID-DS-0001_UT.pem"
 
 openssl req -new -key "$CERTS_DIR/privKey/PID-DS-0001_UT.pem" \
   -out /tmp/ds_ut.csr \
-  -subj "/CN=PID DS - 0002/O=EUDI Wallet Reference Implementation/C=UT" 2>/dev/null
+  -subj "/CN=PID DS - 0002/O=EUDI Wallet Reference Implementation/C=UT"
 
 openssl x509 -req -in /tmp/ds_ut.csr \
   -CA "$CERTS_DIR/trusted_cas/IACA_UT.pem" \
@@ -92,7 +86,7 @@ openssl x509 -req -in /tmp/ds_ut.csr \
   -out /tmp/ds_ut_cert.pem \
   -days 3650 \
   -not_before 20250101000000Z \
-  -extfile <(printf "basicConstraints=CA:FALSE\nkeyUsage=critical,digitalSignature") 2>/dev/null
+  -extfile <(printf "basicConstraints=CA:FALSE\nkeyUsage=critical,digitalSignature")
 
 openssl x509 -in /tmp/ds_ut_cert.pem -outform DER \
   -out "$CERTS_DIR/trusted_cas/PID-DS-0001_UT_cert.der"
@@ -103,14 +97,14 @@ rm -f /tmp/ds_ut.csr /tmp/ds_ut_cert.pem "$CERTS_DIR/trusted_cas/IACA_UT.srl"
 # Nonce 用 RSA 鍵
 # ----------------------------------------------------------------
 echo "=== Generating Nonce RSA key ==="
-openssl genrsa -out "$CERTS_DIR/privKey/nonce_rsa2048.pem" 2048 2>/dev/null
+openssl genrsa -out "$CERTS_DIR/privKey/nonce_rsa2048.pem" 2048
 
 # ----------------------------------------------------------------
 # Credential Request 用 EC 鍵
 # ----------------------------------------------------------------
 echo "=== Generating Credential Request EC key ==="
 openssl ecparam -genkey -name prime256v1 -noout \
-  -out "$CERTS_DIR/privKey/credential_request.pem" 2>/dev/null
+  -out "$CERTS_DIR/privKey/credential_request.pem"
 
 # ----------------------------------------------------------------
 # metadata_config_local.json の JWK を新しい公開鍵で更新
@@ -156,33 +150,32 @@ PYEOF
 # ----------------------------------------------------------------
 echo "=== Generating Verifier JAR signing certificate chain (ES256) ==="
 VTMP=$(mktemp -d)
+trap 'rm -rf "$VTMP"' EXIT
 
 # Root CA
-openssl ecparam -name prime256v1 -genkey -noout -out "$VTMP/root.key" 2>/dev/null
+openssl ecparam -name prime256v1 -genkey -noout -out "$VTMP/root.key"
 openssl req -new -x509 -key "$VTMP/root.key" -out "$VTMP/root.crt" -days 36500 \
   -subj "/CN=root" \
   -addext "basicConstraints=critical,CA:TRUE" \
-  -addext "keyUsage=critical,keyCertSign,cRLSign" 2>/dev/null
+  -addext "keyUsage=critical,keyCertSign,cRLSign"
 
 # Intermediate CA
-openssl ecparam -name prime256v1 -genkey -noout -out "$VTMP/intermediate.key" 2>/dev/null
+openssl ecparam -name prime256v1 -genkey -noout -out "$VTMP/intermediate.key"
 openssl req -new -key "$VTMP/intermediate.key" -out "$VTMP/intermediate.csr" \
-  -subj "/CN=intermediate" 2>/dev/null
+  -subj "/CN=intermediate"
 openssl x509 -req -in "$VTMP/intermediate.csr" \
   -CA "$VTMP/root.crt" -CAkey "$VTMP/root.key" -CAcreateserial \
   -out "$VTMP/intermediate.crt" -days 36500 \
-  -extfile <(printf "basicConstraints=critical,CA:TRUE\nkeyUsage=critical,keyCertSign,cRLSign\nsubjectAltName=DNS:intermediate\nissuerAltName=DNS:intermediate") \
-  2>/dev/null
+  -extfile <(printf "basicConstraints=critical,CA:TRUE\nkeyUsage=critical,keyCertSign,cRLSign\nsubjectAltName=DNS:intermediate\nissuerAltName=DNS:intermediate")
 
 # Verifier cert
-openssl ecparam -name prime256v1 -genkey -noout -out "$VTMP/verifier.key" 2>/dev/null
+openssl ecparam -name prime256v1 -genkey -noout -out "$VTMP/verifier.key"
 openssl req -new -key "$VTMP/verifier.key" -out "$VTMP/verifier.csr" \
-  -subj "/CN=verifier" 2>/dev/null
+  -subj "/CN=verifier"
 openssl x509 -req -in "$VTMP/verifier.csr" \
   -CA "$VTMP/intermediate.crt" -CAkey "$VTMP/intermediate.key" -CAcreateserial \
   -out "$VTMP/verifier.crt" -days 36500 \
-  -extfile <(printf "subjectAltName=DNS:localhost,DNS:verifier\nbasicConstraints=CA:FALSE\nkeyUsage=critical,digitalSignature") \
-  2>/dev/null
+  -extfile <(printf "subjectAltName=DNS:localhost,DNS:verifier\nbasicConstraints=CA:FALSE\nkeyUsage=critical,digitalSignature")
 
 # PKCS12 → JKS
 openssl pkcs12 -export \
@@ -191,13 +184,13 @@ openssl pkcs12 -export \
   -certfile <(cat "$VTMP/intermediate.crt" "$VTMP/root.crt") \
   -name verifier \
   -out "$VTMP/keystore.p12" \
-  -passout pass:keystore 2>/dev/null
+  -passout pass:keystore
 
 keytool -importkeystore \
   -srckeystore "$VTMP/keystore.p12" -srcstoretype PKCS12 -srcstorepass keystore \
   -destkeystore "$CERTS_DIR/verifier/keystore.jks" -deststoretype JKS \
   -deststorepass keystore -destkeypass verifier \
-  -noprompt 2>/dev/null
+  -noprompt
 
 rm -rf "$VTMP"
 echo "  Generated: certs/verifier/keystore.jks"
