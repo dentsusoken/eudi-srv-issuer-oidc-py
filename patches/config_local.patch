@@ -1,14 +1,14 @@
---- config.json	2026-03-03 09:19:57
-+++ config_local.json	2026-03-03 09:16:37
+--- config.json	2026-04-17 09:36:40
++++ config_local.json	2026-04-17 10:04:54
 @@ -33,10 +33,10 @@
        }
     },
     "port":5000,
--   "domain":"dev.issuer.eudiw.dev/oidc",
+-   "domain":"issuer.eudiw.dev/oidc",
 +   "domain":"localhost:6005",
     "server_name":"{domain}",
--   "base_url":"https://dev.issuer.eudiw.dev/oidc",
--   "authorization_redirect_url":"https://dev.issuer.eudiw.dev/auth_choice",
+-   "base_url":"https://issuer.eudiw.dev/oidc",
+-   "authorization_redirect_url":"https://issuer.eudiw.dev/auth_choice",
 +   "base_url":"https://localhost:6005",
 +   "authorization_redirect_url":"https://localhost:5001/auth_choice",
     "op":{
@@ -18,14 +18,14 @@
                       "PS512"
                    ],
                    "allowed_htu":[
--                     "https://dev.issuer.eudiw.dev/token",
--                     "https://dev.issuer.eudiw.dev/oidc/token"
+-                     "https://issuer.eudiw.dev/token",
+-                     "https://issuer.eudiw.dev/oidc/token"
 +                     "https://localhost:5001/token",
 +                     "https://localhost:6005/token"
                    ]
                 }
              }
-@@ -368,8 +368,8 @@
+@@ -370,8 +370,8 @@
        }
     },
     "webserver":{
