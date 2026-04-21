@@ -6,6 +6,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OIDC_REPO="$SCRIPT_DIR/.."
 EUDIW_REPO="$SCRIPT_DIR/../../eudi-srv-web-issuing-eudiw-py"
+FRONTEND_REPO="$SCRIPT_DIR/../../eudi-srv-web-issuing-frontend-eudiw-py"
 
 apply_patch() {
     local original="$1"
@@ -66,6 +67,13 @@ apply_patch_from_git $EUDIW_BASE app/app_config/config_countries.py            a
 apply_patch_from_git $EUDIW_BASE app/app_config/config_service.py              app/app_config/config_service_local.py              patches/config_service_local.patch
 # config_issuer_backend_example.yaml was introduced in v0.9.4 (not in EUDIW_BASE), so use apply_patch directly
 apply_patch          app/config_issuer_backend_example.yaml                    app/config_issuer_backend_local.yaml                patches/config_issuer_backend_local.patch
+
+# ---- eudi-srv-web-issuing-frontend-eudiw-py ----
+echo ""
+echo "=== eudi-srv-web-issuing-frontend-eudiw-py ==="
+cd "$FRONTEND_REPO"
+apply_patch app/__init__.py      app/__init__local.py       patches/__init__.patch
+apply_patch app/auth_redirect.py app/auth_redirect_local.py patches/auth_redirect.patch
 
 echo ""
 echo "Done!"
