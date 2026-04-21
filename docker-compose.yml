@@ -11,11 +11,12 @@ services:
   issuer_oidc_local:
     extends:
       service: issuer_oidc
+    command: python3 /app/server_local.py /config.json
     volumes:
       - ./config_local.json:/config.json:ro
       - ./openid-configuration_local.json:/openid-configuration.json:ro
       - ./views_local.py:/views.py:ro
-      - ./server_local.py:/server.py:ro
+      - ./server_local.py:/app/server_local.py:ro
       - ./script/certs/tls/localhost+2.pem:/certs/tls/localhost+2.pem:ro
       - ./script/certs/tls/localhost+2-key.pem:/certs/tls/localhost+2-key.pem:ro
     profiles: ["local"]
