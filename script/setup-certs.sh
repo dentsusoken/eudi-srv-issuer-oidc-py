@@ -91,6 +91,8 @@ openssl x509 -req -in /tmp/ds_ut.csr \
 openssl x509 -in /tmp/ds_ut_cert.pem -outform DER \
   -out "$CERTS_DIR/trusted_cas/PID-DS-0001_UT_cert.der"
 
+cp /tmp/ds_ut_cert.pem "$CERTS_DIR/trusted_cas/PID-DS-0001_UT_cert.pem"
+
 rm -f /tmp/ds_ut.csr /tmp/ds_ut_cert.pem "$CERTS_DIR/trusted_cas/IACA_UT.srl"
 
 # ----------------------------------------------------------------
