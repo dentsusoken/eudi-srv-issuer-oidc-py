@@ -63,6 +63,7 @@ apply_patch_from_git $EUDIW_BASE app/route_oidc.py                             a
 apply_patch_from_git $EUDIW_BASE app/dynamic_func.py                           app/dynamic_func_local.py                           patches/dynamic_func_local.patch
 apply_patch_from_git $EUDIW_BASE app/route_dynamic.py                          app/route_dynamic_local.py                          patches/route_dynamic_local.patch
 apply_patch_from_git $EUDIW_BASE app/formatter_func.py                         app/formatter_func_local.py                         patches/formatter_func_local.patch
+apply_patch_from_git $EUDIW_BASE app/revocation.py                             app/revocation_local.py                             patches/revocation_local.patch
 apply_patch_from_git $EUDIW_BASE app/app_config/config_countries.py            app/app_config/config_countries_local.py            patches/config_countries_local.patch
 apply_patch_from_git $EUDIW_BASE app/app_config/config_service.py              app/app_config/config_service_local.py              patches/config_service_local.patch
 # config_issuer_backend_example.yaml was introduced in v0.9.4 (not in EUDIW_BASE), so use apply_patch directly
