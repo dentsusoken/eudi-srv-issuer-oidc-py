@@ -60,6 +60,7 @@ EUDIW_BASE="be1b9c2"
 apply_patch_from_git $EUDIW_BASE app/metadata_config/metadata_config.json      app/metadata_config/metadata_config_local.json      patches/metadata_config_local.patch
 apply_patch_from_git $EUDIW_BASE app/metadata_config/openid-configuration.json app/metadata_config/openid-configuration_local.json patches/openid-configuration_local.patch
 apply_patch_from_git $EUDIW_BASE app/route_oidc.py                             app/route_oidc_local.py                             patches/route_oidc_local.patch
+apply_patch_from_git $EUDIW_BASE app/route_oid4vp.py                           app/route_oid4vp_local.py                           patches/route_oid4vp_local.patch
 apply_patch_from_git $EUDIW_BASE app/dynamic_func.py                           app/dynamic_func_local.py                           patches/dynamic_func_local.patch
 apply_patch_from_git $EUDIW_BASE app/route_dynamic.py                          app/route_dynamic_local.py                          patches/route_dynamic_local.patch
 apply_patch_from_git $EUDIW_BASE app/formatter_func.py                         app/formatter_func_local.py                         patches/formatter_func_local.patch
