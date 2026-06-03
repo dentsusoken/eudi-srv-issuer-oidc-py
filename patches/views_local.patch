@@ -1,0 +1,11 @@
+--- views.py	2026-03-03 09:21:43
++++ views_local.py	2026-03-03 09:21:18
+@@ -833,7 +833,7 @@
+     # This is a test to redirect to an issuer endpoint that will call the oauth country form / countries and save data before continuing.
+ 
+     return redirect(
+-        "https://dev.issuer.eudiw.dev/oidc/verify/user"
++        "https://localhost:6005/verify/user"
+         + "?"
+         + urllib.parse.urlencode(
+             {
