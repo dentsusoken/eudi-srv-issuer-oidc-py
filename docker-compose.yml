@@ -19,4 +19,5 @@ services:
       - ./server_local.py:/app/server_local.py:ro
       - ./script/certs/tls/localhost+2.pem:/certs/tls/localhost+2.pem:ro
       - ./script/certs/tls/localhost+2-key.pem:/certs/tls/localhost+2-key.pem:ro
+      - ./script/patches_local_vendor/client_authn.py:/usr/local/lib/python3.13/site-packages/idpyoidc/server/client_authn.py:ro
     profiles: ["local"]
