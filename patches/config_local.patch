@@ -1,38 +1,38 @@
---- config.json	2026-04-17 09:36:40
-+++ config_local.json	2026-04-17 10:04:54
-@@ -33,10 +33,10 @@
-       }
-    },
-    "port":5000,
--   "domain":"issuer.eudiw.dev/oidc",
-+   "domain":"localhost:6005",
-    "server_name":"{domain}",
--   "base_url":"https://issuer.eudiw.dev/oidc",
--   "authorization_redirect_url":"https://issuer.eudiw.dev/auth_choice",
-+   "base_url":"https://localhost:6005",
-+   "authorization_redirect_url":"https://localhost:5001/auth_choice",
-    "op":{
-       "server_info":{
-          "add_ons":{
-@@ -65,8 +65,8 @@
-                      "PS512"
-                   ],
-                   "allowed_htu":[
--                     "https://issuer.eudiw.dev/token",
--                     "https://issuer.eudiw.dev/oidc/token"
-+                     "https://localhost:5001/token",
-+                     "https://localhost:6005/token"
-                   ]
-                }
-             }
-@@ -370,8 +370,8 @@
-       }
-    },
-    "webserver":{
--      "server_cert":"certs/client.crt",
--      "server_key":"certs/client.key",
-+      "server_cert":"/certs/tls/localhost+2.pem",
-+      "server_key":"/certs/tls/localhost+2-key.pem",
-       "ca_bundle":null,
-       "verify_user":false,
-       "port":5000,
+--- config.json
++++ config_local.json
+@@ -30,10 +30,10 @@
+         }
+     },
+     "port": 5000,
+-    "domain": "issuer.eudiw.dev/oidc",
++    "domain": "localhost:6005",
+     "server_name": "{domain}",
+-    "base_url": "https://issuer.eudiw.dev/oidc",
+-    "authorization_redirect_url": "https://issuer.eudiw.dev/auth_choice",
++    "base_url": "https://localhost:6005",
++    "authorization_redirect_url": "https://localhost:5001/auth_choice",
+     "op": {
+         "server_info": {
+             "add_ons": {
+@@ -62,8 +62,8 @@
+                             "PS512"
+                         ],
+                         "allowed_htu": [
+-                            "https://backend.dev.issuer.eudiw.dev/token",
+-                            "https://backend.dev.issuer.eudiw.dev/oidc/token",
++                            "https://localhost:5001/token",
++                            "https://localhost:6005/token",
+                             "https://age-verification.issuer.eudiw.dev/token"
+                         ]
+                     }
+@@ -348,8 +348,8 @@
+         }
+     },
+     "webserver": {
+-        "server_cert": "certs/client.crt",
+-        "server_key": "certs/client.key",
++        "server_cert": "/certs/tls/localhost+2.pem",
++        "server_key": "/certs/tls/localhost+2-key.pem",
+         "ca_bundle": null,
+         "verify_user": false,
+         "port": 5000,
